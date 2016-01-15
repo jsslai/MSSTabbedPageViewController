@@ -39,4 +39,15 @@
  */
 @property (nonatomic, weak) MSSTabBarView *tabBarView;
 
+@optional
+
+/**
+ Attach the tabbed page view controller to a scroll view in the child view controller to allow tab bar auto hiding
+ 
+ @param tabbedPageViewController
+ The tabbed page view controller.
+ @return The scroll view.
+ */
+- (UIScrollView *)attachTabbedPageViewControllerToScrollViewForTabBarAutoHiding:(MSSTabbedPageViewController *)tabbedPageViewController;
+
 @end

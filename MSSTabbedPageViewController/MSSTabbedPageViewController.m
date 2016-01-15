@@ -12,6 +12,8 @@
 
 @property (nonatomic, strong) UIView *contentView;
 
+@property (nonatomic, weak) UIScrollView *attachedScrollview;
+
 @end
 
 @implementation MSSTabbedPageViewController
@@ -79,10 +81,27 @@
 }
 
 - (void)pageViewController:(MSSPageViewController *)pageViewController
-           didScrollToPage:(NSInteger)page {
+           didScrollToPage:(NSInteger)pageIndex
+            viewController:(UIViewController *)viewController {
     if (!pageViewController.isDragging) {
-        [self.tabBarView setTabIndex:page animated:YES];
+        [self.tabBarView setTabIndex:pageIndex animated:YES];
     }
+    
+    if ([pageViewController conformsToProtocol:@protocol(MSSTabbedPageChildViewController)]) {
+        UIViewController<MSSTabbedPageChildViewController> *childViewController = (UIViewController<MSSTabbedPageChildViewController> *)viewController;
+        
+        // attempt to attach scroll view for tab bar hiding
+        if ([pageViewController respondsToSelector:@selector(attachTabbedPageViewControllerToScrollViewForTabBarAutoHiding:)]) {
+            UIScrollView *scrollView = [childViewController attachTabbedPageViewControllerToScrollViewForTabBarAutoHiding:self];
+            if (scrollView) {
+                [self attachScrollViewForTabBarAutoHiding:scrollView];
+            }
+        }
+    }
+}
+
+- (void)pageViewController:(MSSPageViewController *)pageViewController didScrollToPage:(NSInteger)page {
+    
 }
 
 - (void)pageViewController:(MSSPageViewController *)pageViewController
@@ -92,7 +111,7 @@
     self.tabBarView.defaultTabIndex = self.pageViewController.defaultPageIndex;
     
     for (UIViewController<MSSTabbedPageChildViewController> *viewController in viewControllers) {
-        if ([viewController respondsToSelector:@selector(tabBarView)]) {
+        if ([viewController conformsToProtocol:@protocol(MSSTabbedPageChildViewController)]) {
             viewController.tabBarView = self.tabBarView;
         }
     }
@@ -144,6 +163,12 @@
     margins.left = 0.0f;
     margins.right = 0.0f;
     self.contentView.layoutMargins = margins;
+}
+
+- (void)attachScrollViewForTabBarAutoHiding:(UIScrollView *)scrollView {
+    self.attachedScrollview = scrollView;
+    
+    
 }
 
 @end

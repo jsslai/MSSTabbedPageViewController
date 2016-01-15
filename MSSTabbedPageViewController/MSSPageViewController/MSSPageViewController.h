@@ -44,6 +44,19 @@ typedef NS_ENUM(NSInteger, MSSPageViewControllerScrollDirection) {
 - (void)pageViewController:(MSSPageViewController *)pageViewController
            didScrollToPage:(NSInteger)page;
 
+/**
+ The page view controller has completed scroll to a page.
+ 
+ @param pageViewController
+ The page view controller.
+ @param pageIndex
+ The new currently visible page index.
+ @param viewController
+ The new currently visible view controller.
+ */
+- (void)pageViewController:(MSSPageViewController *)pageViewController
+           didScrollToPage:(NSInteger)pageIndex
+            viewController:(UIViewController *)viewController;
 
 /**
  The page view controller has successfully prepared child view controllers ready for display.

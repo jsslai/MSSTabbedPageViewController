@@ -167,6 +167,12 @@
         if ([self.delegate respondsToSelector:@selector(pageViewController:didScrollToPage:)]) {
             [self.delegate pageViewController:self didScrollToPage:self.currentPage];
         }
+        
+        if ([self.delegate respondsToSelector:@selector(pageViewController:didScrollToPage:viewController:)]) {
+            [self.delegate pageViewController:self
+                              didScrollToPage:self.currentPage
+                               viewController:[self viewControllerAtIndex:self.currentPage]];
+        }
     }
 }
 

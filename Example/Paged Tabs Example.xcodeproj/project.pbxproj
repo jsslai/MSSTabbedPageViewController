@@ -124,10 +124,10 @@
 		D65593671C4903CD000CAD99 /* MSSTabbedPageViewController */ = {
 			isa = PBXGroup;
 			children = (
-				D65593681C4903CD000CAD99 /* Components */,
-				D655936F1C4903CD000CAD99 /* MSSPageViewController */,
 				D65593741C4903CD000CAD99 /* MSSTabbedPageViewController.h */,
 				D65593751C4903CD000CAD99 /* MSSTabbedPageViewController.m */,
+				D65593681C4903CD000CAD99 /* Components */,
+				D655936F1C4903CD000CAD99 /* MSSPageViewController */,
 				D65593761C4903CD000CAD99 /* Utilities */,
 			);
 			name = MSSTabbedPageViewController;
