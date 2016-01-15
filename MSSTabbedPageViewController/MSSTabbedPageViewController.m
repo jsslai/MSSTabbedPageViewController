@@ -35,7 +35,11 @@
         self.pageViewController.delegate = self;
     }
     if (!_tabBarView) {
-        _tabBarView = [MSSTabBarView new];
+        CGFloat tabHeight = 0.0f;
+        if ([self.delegate respondsToSelector:@selector(tabbedPageViewControllerHeightForTabBar:)]) {
+            tabHeight = [self.delegate tabbedPageViewControllerHeightForTabBar:self];
+        }
+        _tabBarView = [[MSSTabBarView alloc]initWithHeight:tabHeight];
         self.tabBarView.dataSource = self;
         self.tabBarView.delegate = self;
     }
@@ -49,7 +53,7 @@
     
     [self.pageViewController addToParentViewController:self withView:self.contentView];
     [self.contentView addPinnedToTopAndSidesSubview:self.tabBarView
-                                  withHeight:MSSTabBarViewDefaultHeight];
+                                  withHeight:self.tabBarView.height];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size
@@ -113,6 +117,10 @@
     for (UIViewController<MSSTabbedPageChildViewController> *viewController in viewControllers) {
         if ([viewController conformsToProtocol:@protocol(MSSTabbedPageChildViewController)]) {
             viewController.tabBarView = self.tabBarView;
+            viewController.requiredContentInset = UIEdgeInsetsMake(self.tabBarView.height,
+                                                                   0.0f,
+                                                                   0.0f,
+                                                                   0.0f);
         }
     }
 }
@@ -151,6 +159,13 @@
 - (id<MSSTabbedPageViewControllerDataSource>)dataSource {
     if (_dataSource) {
         return _dataSource;
+    }
+    return self;
+}
+
+- (id<MSSTabbedPageViewControllerDelegate>)delegate {
+    if (_delegate) {
+        return _delegate;
     }
     return self;
 }
